@@ -73,6 +73,14 @@ __global__  void  unique_idx_2d_grid_2d_block(int *input)
 }
 
 
+__global__  void  unique_idx_2d_grid_3d_block(int *input)
+{
+	int blockId = blockIdx.x  + blockIdx.y * gridDim.x;
+	int gid = blockId *( blockDim.x * blockDim.y * blockDim.z)
+		 + threadIdx.z * (blockDim.x * blockDim.y)
+		 + threadIdx.y * blockDim.x  + threadIdx.x;
+        printf("gid=%d, value=%d\n",gid, input[gid]);
+}
 
 
 
@@ -139,9 +147,19 @@ int main(void)
 #endif
 
    
+ #if 1
+    printf("\n2D grid of 3D block:\n");
+    dim3 block23(2,2,2);
+    dim3 grid23(4,4);
+    unique_idx_2d_grid_3d_block<<<grid23,block23>>>(d_data);
+    printf("\n\n");
+    cudaDeviceSynchronize();
+#endif
+
 
 
     cudaDeviceReset();
- 
+    cudaFree(d_data);
+    free(h_data); 
     return 0;
 }
