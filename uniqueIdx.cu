@@ -44,8 +44,8 @@ __global__  void  unique_idx_1d_grid_2d_block(int *input)
 __global__  void  unique_idx_1d_grid_3d_block(int *input)
 {
       int gid = threadIdx.x + blockIdx.x * blockDim.x * blockDim.y * blockDim.z +
-	        threadIdx.y * blockDim.y * blockDim.x + 
-		threadIdx.y + blockDim.x; 
+	        threadIdx.z * blockDim.y * blockDim.x + 
+		threadIdx.y * blockDim.x; 
       
       printf("gid=%d, value=%d\n",gid, input[gid]); 
 
